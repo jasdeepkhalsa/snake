@@ -1,11 +1,13 @@
 // TODO: Bug whereby food can spawn inside the snake
 ;(function () {
+  // Values that are immutable - don't change
   const canvas = document.querySelector('.game')
   const context = canvas.getContext('2d')
   const fifteenASecond = 1000 / 15
   const gridSize = 20
   const tileCount = 20
 
+  // Values that change
   let xPlayer = 10
   let yPlayer = 10
   let xFood = 15
@@ -15,6 +17,7 @@
   let trail = []
   let tail = 5
 
+  // Arrow key mappings
   const Keys = {
     LEFT: 37,
     UP: 38,
@@ -22,10 +25,15 @@
     DOWN: 40,
   }
 
+  // Load the game once all page resources have been loaded
+  // Including DOM, stylesheets, JavaScript, images etc.
   window.addEventListener('load', load)
 
   function load() {
+    // Link the keydown event to our keyPush function
     document.addEventListener('keydown', keyPush)
+    // Load the game function at a frame rate of 15 frames per second
+    // Which should produce a smooth animation for this game
     setInterval(game, fifteenASecond)
   }
 
@@ -51,14 +59,16 @@
       yPlayer = 0
     }
 
-    // Make the background
+    // Create the background, fill all the canvas area
     context.fillStyle = 'black'
     context.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Make the snake
+    // Create the snake
     context.fillStyle = 'lime'
 
-    // Create the snake's trail
+    // Create the snake's tail
+    // By looping over the trail array
+    // Which lists each of the player's previous positions
     for (let i = 0; i < trail.length; i++) {
       let currentTrail = trail[i]
 
@@ -76,12 +86,13 @@
     }
 
     // Record the player position
+    // To produce a tail on the next frame
     trail.push({
       x: xPlayer,
       y: yPlayer,
     })
 
-    // If trail becomes too long, trim it
+    // If trail array becomes longer than the tail size, trim it
     while (trail.length > tail) {
       trail.shift()
     }
@@ -107,6 +118,7 @@
     context.fillStyle = 'white'
     const score = tail - 5
 
+    // If there is no velocity, lets draw the starting screen
     if (xVelocity === 0 && yVelocity === 0) {
       context.font = '1.5em Verdana'
       context.textAlign = 'center'
@@ -115,7 +127,9 @@
         canvas.width / 2,
         canvas.height / 2
       )
-    } else {
+    }
+    // Otherwise, lets draw the points in the top-left corner
+    else {
       context.font = '1em Verdana'
       context.textAlign = 'left'
       context.fillText(`Points: ${score}`, 5, gridSize)
@@ -123,6 +137,7 @@
   }
 
   // Add/remove velocity based on arrow keys pushed
+  // This will be applied to all the following frames
   function keyPush(event) {
     switch (event.keyCode) {
       case Keys.LEFT:
