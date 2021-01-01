@@ -8,4 +8,8 @@ Should work in all the latest browsers.
 
 Highly commented code sample, great for learning the basics of game programming.
 
+## Demo
+
+https://jasdeepkhalsa.github.io/snake/
+
 Made with :heart:
